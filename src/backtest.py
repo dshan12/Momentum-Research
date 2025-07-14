@@ -1,7 +1,7 @@
 import pandas as pd
 from signals import (
     load_prices,
-    compute_montly_returns,
+    compute_monthly_returns,
     compute_momentum_signal,
     build_signals,
 )
@@ -51,7 +51,7 @@ def backtest(longs, shorts, returns, tc=0.001):
 
 if __name__ == "__main__":
     prices = load_prices()
-    returns = compute_montly_returns(prices)
+    returns = compute_monthly_returns(prices)
     ranks = compute_momentum_signal(returns)
     longs, shorts = build_signals(ranks)
 

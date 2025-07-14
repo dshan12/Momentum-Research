@@ -7,7 +7,7 @@ def load_prices(path="data/cleaned/cleaned_monthly_prices.csv"):
     return prices
 
 
-def compute_montly_returns(prices):
+def compute_monthly_returns(prices):
     """Compute simple montly returns from price series"""
     return prices.pct_change().dropna(how="all")
 
