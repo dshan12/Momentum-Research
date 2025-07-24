@@ -1,5 +1,5 @@
 import pandas as pd
-from signals import (
+from src.signals import (
     load_prices,
     compute_monthly_returns,
     compute_momentum_signal,

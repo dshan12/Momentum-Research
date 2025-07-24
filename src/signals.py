@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def load_prices(path="data/cleaned/cleaned_monthly_prices.csv"):
+def load_prices(path="./data/cleaned/cleaned_monthly_prices.csv"):
     """Loads the cleaned monthly prices csv file"""
     prices = pd.read_csv(path, index_col=0, parse_dates=True)
     return prices
