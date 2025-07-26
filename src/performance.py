@@ -1,3 +1,14 @@
+import os
+import sys
+
+# Get the project root by going one level up from this file (i.e. src/)
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
+# Prepend it to sys.path so Python will look here first
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -123,9 +134,9 @@ if __name__ == "__main__":
     print("Max Drawdown  ", f"{max_drawdown(strat):.2%}")
 
     # 3. CAPM on strat vs. SPY
-    spy = yf.download("SPY", start="2005-01-01", end="2024-12-31", interval="1mo")[
-        "Close"
-    ]
+    spy = yf.download(
+        "SPY", start="2005-01-01", end="2024-12-31", interval="1mo", auto_adjust=True
+    )["Close"]
     sp_rets = spy.pct_change().dropna().iloc[:, 0]
     capm_res = capm_regression(strat, sp_rets, rf_rate=0.02)
     print(capm_res.summary())

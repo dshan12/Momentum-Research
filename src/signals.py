@@ -42,10 +42,10 @@ if __name__ == "__main__":
     # Quick standalone test
     print("Loading prices...")
     prices = load_prices()
-    print("Computing montly returns...")
-    returns = compute_montly_returns(prices)
+    print("Computing monthly returns...")
+    returns = compute_monthly_returns(prices)
     print("Computing momentum signal...")
-    ranks = compute_momentum_signal(returns)
+    ranks = compute_momentum_signal(prices)
     print("Building signals...")
     longs, shorts = build_signals(ranks)
     print("Signals built!")

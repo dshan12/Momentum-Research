@@ -1,3 +1,14 @@
+import os
+import sys
+
+# Get the project root by going one level up from this file (i.e. src/)
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
+# Prepend it to sys.path so Python will look here first
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+
 import pandas as pd
 from src.signals import (
     load_prices,
@@ -52,7 +63,7 @@ def backtest(longs, shorts, returns, tc=0.001):
 if __name__ == "__main__":
     prices = load_prices()
     returns = compute_monthly_returns(prices)
-    ranks = compute_momentum_signal(returns)
+    ranks = compute_momentum_signal(prices)
     longs, shorts = build_signals(ranks)
 
     # Backtest

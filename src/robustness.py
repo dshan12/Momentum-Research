@@ -1,3 +1,14 @@
+import os
+import sys
+
+# Get the project root by going one level up from this file (i.e. src/)
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+
+# Prepend it to sys.path so Python will look here first
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
+
 import pandas as pd
 import sys
 import os
@@ -30,7 +41,7 @@ def vary_lookbacks(prices, lookbacks=[6, 9, 12, 18], skip=1, tc=0.001):
     for lb in lookbacks:
         ranks = compute_momentum_signal(prices, lookback=lb, skip=skip)
         longs, shorts = build_signals(ranks)
-        strat = backtest(longs, shorts, rets)
+        strat = backtest(longs, shorts, rets, tc=tc)
         rows.append(
             {
                 "lookback": lb,
@@ -61,19 +72,40 @@ def vary_tc(prices, lookback=12, skip=1, tcs=(0, 0.001, 0.002, 0.005)):
     return pd.DataFrame(rows).set_index("tc_bps")
 
 
+def fetch_sector_map():
+    """
+    Returns a dict mapping ticker → sector using Wikipedia's S&P 500 list.
+    """
+    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    table = pd.read_html(url, header=0)[0]
+    table["Symbol"] = table["Symbol"].str.replace(".", "-", regex=False)
+    return dict(zip(table["Symbol"], table["GICS Sector"]))
+
+
 def sector_neutral(prices, sector_map, lookback=12, skip=1, tc=0.001):
     """
     Rank within each sector, then equal weight across sectors to neutralize sector tilts
     """
     rets = compute_monthly_returns(prices)
-    mom = prices.pct_chage(lookback).shift(skip).dropna(how="all")
+    mom = prices.pct_change(lookback).shift(skip).dropna(how="all")
     sectors = pd.Series(sector_map).reindex(prices.columns)
-    rank_df = (mom.groupby(sectors, axis=1).mean() * 100).rank(axis=1, pct=True)
+    rank_df = mom.groupby(sectors, axis=1).rank(axis=1, pct=True)
     longs, shorts = build_signals(rank_df)
     return backtest(longs, shorts, rets, tc=tc)
 
 
 if __name__ == "__main__":
     p = load_prices()
-    print(vary_lookbacks(p))
-    print(vary_tc(p))
+
+    print("=== Lookback Sensitivity ===")
+    print(vary_lookbacks(p).round(4))
+
+    print("\n=== Transaction Cost Sensitivity ===")
+    print(vary_tc(p).round(4))
+
+    print("\n=== Sector-Neutral Strategy ===")
+    sector_map = fetch_sector_map()
+    sn_rets = sector_neutral(p, sector_map)
+    print(f"Ann. Return: {annualized_returns(sn_rets):.2%}")
+    print(f"Sharpe (2% rf): {sharpe_ratio(sn_rets, rf_rate=0.02):.2f}")
+    print(f"Max Drawdown: {max_drawdown(sn_rets):.2%}")

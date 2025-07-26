@@ -22,7 +22,12 @@ def download_monthly_prices(tickers):
     Downloads the monthly prices for the given tickers and returns a dataframe
     """
     prices = yf.download(
-        tickers, start=START_DATE, end=END_DATE, interval="1mo", progress=False
+        tickers,
+        start=START_DATE,
+        end=END_DATE,
+        interval="1mo",
+        progress=False,
+        auto_adjust=True,
     )["Close"]
     return prices
 
