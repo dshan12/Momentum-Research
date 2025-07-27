@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.7.26)  26 JUL 2025 19:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex 2025.7.26)  26 JUL 2025 19:28
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -450,36 +450,49 @@ Overfull \hbox (0.59451pt too wide) in paragraph at lines 115--117
 [3]
 
 [4]
-<figures/equity_curve.png, id=163, 462.528pt x 346.896pt>
+<figures/equity_curve.png, id=177, 462.528pt x 346.896pt>
 File: figures/equity_curve.png Graphic file (type png)
 <use figures/equity_curve.png>
-Package pdftex.def Info: figures/equity_curve.png  used on input line 214.
-(pdftex.def)             Requested size: 375.80544pt x 281.86818pt.
- (./paper.bbl
+Package pdftex.def Info: figures/equity_curve.png  used on input line 219.
+(pdftex.def)             Requested size: 399.29463pt x 299.48395pt.
+<figures/drawdown.png, id=179, 462.528pt x 346.896pt>
+File: figures/drawdown.png Graphic file (type png)
+<use figures/drawdown.png>
+Package pdftex.def Info: figures/drawdown.png  used on input line 226.
+(pdftex.def)             Requested size: 399.29463pt x 299.48395pt.
 
-[5 <./figures/equity_curve.png>])
 
-[6] (./paper.aux)
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+
+[5 <./figures/equity_curve.png>]
+
+[6 <./figures/drawdown.png>] (./paper.bbl
+
+[7])
+
+[8] (./paper.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `paper.out' has not changed.
-(rerunfilecheck)             Checksum: 2DBCCC14A0AE0853DE16F604CD7A94AD;2290.
+(rerunfilecheck)             Checksum: 187EEB9BDFB7972B9FDB74CC72F549AF;2681.
  ) 
 Here is how much of TeX's memory you used:
- 13394 strings out of 475171
- 204940 string characters out of 5767095
- 643003 words of memory out of 5000000
- 36015 multiletter control sequences out of 15000+600000
- 583331 words of font info for 161 fonts, out of 8000000 for 9000
+ 13443 strings out of 475171
+ 205587 string characters out of 5767095
+ 642287 words of memory out of 5000000
+ 36029 multiletter control sequences out of 15000+600000
+ 584173 words of font info for 173 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  75i,11n,79p,1002b,600s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0600.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on paper.pdf (6 pages, 451977 bytes).
+Output written on paper.pdf (8 pages, 482221 bytes).
 PDF statistics:
- 296 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
- 53 named destinations out of 1000 (max. 500000)
- 44166 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 332 PDF objects out of 1000 (max. 8388607)
+ 265 compressed objects within 3 object streams
+ 64 named destinations out of 1000 (max. 500000)
+ 44195 words of extra memory for PDF output out of 51595 (max. 10000000)
 

@@ -64,7 +64,7 @@ Yet momentum’s real‑world performance can be fragile.  \citet{Daniel2016} de
 \paragraph{Preview of results.}
 The naïve strategy underperforms: it earns an annualized return of --10.20\% with a Sharpe ratio of --0.50 and a 91.49\% maximum drawdown.  CAPM alpha is --0.34\% per month (t~=~--0.77), and a bootstrap p‑value of 0.534 confirms the alpha is not statistically significant.  Robustness tests reveal that neither shorter nor longer lookbacks, lower costs, nor sector neutrality rescues performance.
 
-The remainder of the paper is organised as follows.  Section~\ref{sec:data} describes the data; Section~\ref{sec:method} details the methodology; Section~\ref{sec:results} presents the empirical results; Section~\ref{sec:robust} discusses robustness checks; Section~\ref{sec:concl} concludes.
+The remainder of the paper is organised as follows.  Section~\ref{sec:data} describes the data; Section~\ref{sec:method} details the methodology; Section~\ref{sec:results} presents the empirical results; Section~\ref{sec:concl} concludes.
 
 \section{Data} \label{sec:data}
 % Describe S\&P 500 universe, Jan 2005–Dec 2024, yfinance source, cleaning rules.
@@ -191,35 +191,112 @@ These methods mirror the Python code released with this paper and documented in 
 
 \section{Results} \label{sec:results}
 % Table of key metrics:
+
+\subsection{Headline performance}
+
+Table~\ref{tab:perf} summarises the net performance of the 12--1 momentum strategy after 10~bp round‑trip costs.  
+The strategy loses 10.20~\% per year and posts a Sharpe ratio of --0.50, with a severe 91.49~\% maximum drawdown.
+
 \begin{table}[h!]
   \centering
-  \begin{tabular}{l r}
+  \begin{tabular}{lcc}
     \toprule
-    Metric                  & Value     \\
-    \midrule
-    Annualized return       & 12.3\%    \\
-    Annualized volatility   & 18.5\%    \\
-    Sharpe ratio (2\% rf)   & 0.56      \\
-    Max drawdown            & 22.4\%    \\
-    CAPM alpha              & 3.2\%     \\
-    Alpha t‑stat            & 2.45      \\
-    Bootstrap p‑value       & 0.013     \\
-    \bottomrule
+    & \textbf{Value} & \textbf{Units} \\ \midrule
+    Annualised return      & --10.20 & \% \\[2pt]
+    Annualised volatility  & 24.10   & \% \\[2pt]
+    Sharpe ratio (2~\% rf) & --0.50  & -- \\[2pt]
+    Maximum drawdown       & 91.49   & \% \\ \bottomrule
   \end{tabular}
-  \caption{Strategy performance over January 2005–December 2024.}
+  \caption{Net performance, January~2005--December~2024.}
+  \label{tab:perf}
 \end{table}
+
+Figure~\ref{fig:eqcurve} plots the cumulative equity curve and shows a prolonged drawdown beginning in 2009.  
+Figure~\ref{fig:dd} displays the drawdown path.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.8\textwidth]{figures/equity_curve.png}
-  \caption{Cumulative returns: momentum strategy vs.\ SPY buy‑and‑hold.}
+  \includegraphics[width=0.85\linewidth]{figures/equity_curve.png}
+  \caption{Cumulative equity curve: strategy vs.\ S\&P\,500.}
+  \label{fig:eqcurve}
 \end{figure}
 
-\section{Robustness \& Discussion} \label{sec:robust}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/drawdown.png}
+  \caption{Percentage drawdown of the strategy.}
+  \label{fig:dd}
+\end{figure}
+
+\subsection{Risk‑adjusted alpha}
+
+A CAPM regression of monthly excess returns on the market factor yields an \emph{alpha} of --0.34~\% per month (t~=~--0.77).  
+A non‑parametric bootstrap with 1\,000 resamples reports a two‑sided $p$‑value of 0.534, confirming that the alpha is not statistically different from zero.
+
+\subsection{Robustness checks}
+
+\paragraph{Lookback window.}
+Changing the ranking horizon to 6, 9, or 18 months does not help (Table~\ref{tab:lookback}).  
+All variants exhibit negative annual returns and drawdowns above 90~\%.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+    Lookback (mo.) & Ann.\ return & Sharpe & Max DD \\ \midrule
+    6  & --10.59\% & --0.57 & 91.74\% \\
+    9  & --10.60\% & --0.51 & 92.71\% \\
+    12 & --10.20\% & --0.50 & 91.49\% \\
+    18 & --10.41\% & --0.50 & 92.02\% \\ \bottomrule
+  \end{tabular}
+  \caption{Performance vs.\ lookback horizon (10~bp costs).}
+  \label{tab:lookback}
+\end{table}
+
+\paragraph{Transaction costs.}
+Doubling and quintupling the round‑trip cost linearly erodes performance (Table~\ref{tab:tc}).  
+At 50~bp the strategy loses 11.92~\% annually and the Sharpe ratio falls to --0.57.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{cccc}
+    \toprule
+    Cost (bp) & Ann.\ return & Sharpe & Max DD \\ \midrule
+    0  & --9.77\%  & --0.48 & 90.83\% \\
+    10 & --10.20\% & --0.50 & 91.49\% \\
+    20 & --10.64\% & --0.52 & 92.10\% \\
+    50 & --11.92\% & --0.57 & 93.67\% \\ \bottomrule
+  \end{tabular}
+  \caption{Performance vs.\ transaction costs (12--1 lookback).}
+  \label{tab:tc}
+\end{table}
+
+\paragraph{Sector neutrality.}
+Ranking stocks within GICS sectors yields an annual return of --10.74~\% (Sharpe --0.63, Max DD 91.33~\%).  
+Hence sector tilts do not explain the underperformance.
+
+\subsection{Summary}
+
+Across all specifications the 12--1 momentum rule fails to earn positive risk‑adjusted returns in the S\&P\,500 during 2005--2024.  
+Realistic frictions and constituent turnover appear sufficient to extinguish the historical momentum premium.
 % Insert lookback and transaction‑cost sensitivity figures and interpret them.
 
 \section{Conclusion} \label{sec:concl}
 % Recap findings, limitations, and ideas for future work.
+This paper re‑examines the canonical 12--1 month cross‑sectional momentum strategy on S\&P\,500 constituents over 2005--2024 using freely available data and fully transparent Python code.  
+After accounting for realistic round‑trip trading costs of 10~basis points, the strategy delivers an annualised return of --10.20~\% with a Sharpe ratio of --0.50 and a maximum drawdown exceeding 90~\%.  
+CAPM analysis and bootstrap resampling show that the estimated alpha is statistically indistinguishable from zero.  
+Robustness checks confirm the result across alternative lookback windows, higher cost assumptions, and a sector‑neutral implementation.
+
+\textbf{Limitations.}  
+First, our data source (Yahoo Finance) may contain stale quotes or survivorship artefacts despite cleaning.  
+Second, we assume equal weights within the long and short legs; value‑weighted or volatility‑scaled allocations could yield different outcomes.  
+Third, we consider only a single factor; multi‑factor momentum or higher‑frequency signals remain unexplored.
+
+\textbf{Implications and future work.}  
+The evidence suggests that the once‑profitable momentum premium in large‑capitalisation U.S.\ equities has been arbitraged away—or offset by implementation frictions—over the past two decades.  
+Future research might test \emph{quality‑filtered} or \emph{residual} momentum signals, explore cross‑asset momentum where trading costs differ, or apply deep‑learning ranking models that adapt dynamically to regime changes.  
+Extending the analysis to international markets and intraday horizons would further clarify whether momentum remains a viable source of alpha in today’s public markets.
 
 \bibliographystyle{apalike}
 \bibliography{references}
