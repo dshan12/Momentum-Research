@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 # Momentum-Research : Re-examining 12-Month Equity Momentum (2005 – 2024)
 
 [![DOI](https://zenodo.org/badge/1018743111.svg)](https://doi.org/10.5281/zenodo.16702629)
@@ -51,4 +49,3 @@ A separate DOI for the working-paper PDF is listed under **Related Identifiers**
 ## License
 
 This project is licensed under the **MIT License** – see [`LICENSE`](LICENSE) for details.
->>>>>>> 95096f5 (chore: updated readme.md)
