@@ -31,7 +31,7 @@ All code is released under the MIT license; nothing herein constitutes investmen
 ## Results Snapshot
 
 <p align="center">
-  <img src="figures/equity_curve_net_costs.png" width="600" alt="Equity curve">
+  <img src="figures/equity_curve.png" width="600" alt="Equity curve">
 </p>
 
 *Figure 1 – Momentum strategy vs. SPY net of 10 bps costs.*
