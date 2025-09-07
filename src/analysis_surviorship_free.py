@@ -7,6 +7,11 @@ from data.panel_from_membership import (
     load_membership_monthly,
     prices_masked_by_membership,
 )
+from data.turnover import (
+    equal_weight_long_short,
+    turnover_from_weights,
+    apply_turnover_costs,
+)
 
 
 def compute_monthly_returns_from_masked_prices(
@@ -94,28 +99,84 @@ def main():
     valid = (longs.sum(axis=1) >= min_names) & (shorts.sum(axis=1) >= min_names)
     longs = longs.where(valid, 0)
     shorts = shorts.where(valid, 0)
-    gross = long_short_equal_weight(longs, shorts, rets)
 
-    TC = 0.001
-    names_traded = longs.sum(axis=1).fillna(0) + shorts.sum(axis=1).fillna(0)
-    ntickers = (masked_prices.notna().sum(axis=1)).astype(float).replace(0, np.nan)
-    cost = (2 * TC * names_traded / ntickers).fillna(0.0)
+    W = equal_weight_long_short(longs, shorts)
+    gross = (W * rets).sum(axis=1)
+    gross.name = "strategy_gross"
 
-    net = (gross - cost).dropna()
+    to = turnover_from_weights(W, rets)
+    COST_BPS = 10
+    net = apply_turnover_costs(gross, to, COST_BPS).dropna()
 
-    print("=== Survivorship-free (12–1, name-count costs 10 bps) ===")
+    def summarize_series(r: pd.Series, rf_annual: float = 0.02) -> dict:
+        def ann_ret(x):
+            return (1 + x.mean()) ** 12 - 1
+
+        def sharpe(x):
+            rf_m = (1 + rf_annual) ** (1 / 12) - 1
+            ex = x - rf_m
+            return (ex.mean() / (ex.std() + 1e-12)) * np.sqrt(12)
+
+        def max_dd(x):
+            w = (1 + x).cumprod()
+            return float((w / w.cummax() - 1).min())
+
+        return {
+            "AnnRet": ann_ret(r),
+            "Vol": r.std() * np.sqrt(12),
+            "Sharpe": sharpe(r),
+            "MaxDD": max_dd(r),
+        }
+
+    bps_grid = [5, 10, 15, 25]
+    rows = []
+    for bps in bps_grid:
+        net_bps = gross - (bps / 1e4) * to
+        net_bps = net_bps.dropna()
+        stats = summarize_series(net_bps)
+        rows.append(
+            {
+                "Cost_bps": bps,
+                "AnnRet": stats["AnnRet"],
+                "Vol": stats["Vol"],
+                "Sharpe": stats["Sharpe"],
+                "MaxDD": stats["MaxDD"],
+                "AvgTurnover": to.mean(),
+            }
+        )
+    sens = pd.DataFrame(rows)
+    print("\n[TC sensitivity]")
+    print(
+        sens.to_string(
+            index=False,
+            formatters={
+                "AnnRet": "{:.2%}".format,
+                "Vol": "{:.2%}".format,
+                "Sharpe": "{:.2f}".format,
+                "MaxDD": "{:.2%}".format,
+                "AvgTurnover": "{:.2%}".format,
+            },
+        )
+    )
+
+    print("=== Survivorship-free (12–1, turnover costs @ 10 bps one-way) ===")
     print(f"Ann Return (net): {annualized_return(net):.2%}")
     print(
         f"Vol/Sharpe (2% rf): {(net.std() * np.sqrt(12)):.2%} / {sharpe_ratio(net):.2f}"
     )
     print(f"Max DD: {max_drawdown(net):.2%}")
-
+    print(
+        f"Avg monthly turnover: {to.mean():.2%} | Median: {to.median():.2%} | 95th pct: {to.quantile(0.95):.2%}"
+    )
+    print(f"Avg monthly cost @ {COST_BPS:.1f} bps: {(to.mean() * COST_BPS / 1e4):.4%}")
     out_dir = os.path.join(ROOT, "data/cleaned")
     os.makedirs(out_dir, exist_ok=True)
+    sens.to_csv(os.path.join(out_dir, "tc_sensitivity.csv"), index=False)
     masked_prices.to_csv(os.path.join(out_dir, "masked_prices_survivorship.csv"))
     rets.to_csv(os.path.join(out_dir, "returns_survivorship.csv"))
     gross.to_csv(os.path.join(out_dir, "strategy_gross_survivorship.csv"))
     net.to_csv(os.path.join(out_dir, "strategy_net_survivorship.csv"))
+    to.to_csv(os.path.join(out_dir, "strategy_turnover_survivorship.csv"))
     print("[✓] Saved survivorship-free series.")
 
 
