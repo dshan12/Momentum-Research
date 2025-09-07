@@ -21,7 +21,6 @@ All code is released under the MIT license; nothing herein constitutes investmen
 
 | Feature | What it does | Why it matters |
 |---------|--------------|----------------|
-| **Bias controls** | Rebuilds historical S&P 500 membership; lags signals one trading day | Removes survivorship & look-ahead |
 | **Transaction-cost model** | User-settable round-trip bps; default = 10 bps | Tests real-world implementability |
 | **Robustness sweep** | Grid search over look-back horizons & top-N winners/losers | Detects parameter cherry-picking |
 | **Risk diagnostics** | CAPM regression, bootstrap Sharpe, rolling 36-mo metrics | Quantifies statistical significance |
