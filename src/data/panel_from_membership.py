@@ -12,8 +12,8 @@ def load_prices_union(path="data/cleaned/monthly_adjclose_union.csv") -> pd.Data
 def load_membership_monthly(
     path="data/cleaned/sp500_membership_monthly.csv",
 ) -> pd.DataFrame:
-    m = pd.read_csv(path, parse_dates=["dated"])
-    m["ticker"] = m["Ticker"].astype(str)
+    m = pd.read_csv(path, parse_dates=["date"])
+    m["ticker"] = m["ticker"].astype(str)
     return m
 
 
@@ -27,7 +27,7 @@ def prices_masked_by_membership(
         .reindex(prices.index)
         .fillna(0.0)
     )
-    common = sorted(set(prices.columns).intersections(set(mask.columns)))
+    common = sorted(set(prices.columns).intersection(set(mask.columns)))
     P = prices[common].copy()
     M = mask[common].astype(float)
     P = P.where(M > 0.5, np.nan)
