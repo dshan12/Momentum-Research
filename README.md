@@ -1,8 +1,6 @@
 # Momentum-Research : Survivorship–Bias–Free 12–1 Momentum in the S&P 500 (2005–2024)
 
-[![DOI](https://zenodo.org/badge/1018743111.svg)](https://doi.org/10.5281/zenodo.16702629)  
-![Python](https://img.shields.io/badge/python-3.11-blue.svg)  
-![License](https://img.shields.io/badge/license-MIT-green.svg)  
+[![DOI](https://zenodo.org/badge/1018743111.svg)](https://doi.org/10.5281/zenodo.16702629)   ![Python](https://img.shields.io/badge/python-3.11-blue.svg)  ![License](https://img.shields.io/badge/license-MIT-green.svg)  
 
 A **fully reproducible replication study** of the canonical **12–1 month cross-sectional momentum strategy** in the S&P 500.  
 This project covers **January 2005 – December 2024**, and makes three contributions:
